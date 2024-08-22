@@ -27,7 +27,7 @@ const Navigation = ({ marginB = "mb-16" }) => {
       localStorage.removeItem("user");
       return;
     }
-  });
+  },[]);
 
   return (
     <div

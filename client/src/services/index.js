@@ -32,3 +32,15 @@ export async function  createNewPost(data,token) {
     const resData = await res.json();
     return resData
 }
+export async function  getAllPosts() {
+    const res = await fetch('http://localhost:3000/api/posts/', {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            
+          },
+         
+    })
+    const resData = await res.json();
+    return resData
+}
