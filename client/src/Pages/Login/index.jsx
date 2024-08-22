@@ -16,6 +16,7 @@ const Login = () => {
                 Email
               </label>
               <input
+                autoComplete="email"
                 name="email"
                 placeholder="Enter your email"
                 required

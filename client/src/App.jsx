@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
@@ -10,7 +11,7 @@ import PostDetail from "./Pages/PostDetail";
 function App() {
   return (
     <>
-      <ToastContainer/>
+      <ToastContainer autoClose={750}/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/user/login" element={<Login />} />

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import burger from "../../assets/icons/burger.svg";
 import close from "../../assets/icons/close.svg";
-const Navigation = ({ marginB = "mb-16", isUser = true }) => {
+const Navigation = ({ marginB = "mb-16", isUser = false }) => {
   const navigate = useNavigate();
-const [isClose,setIsClose] = useState(true)
+  const [isClose, setIsClose] = useState(true);
   return (
     <div
       className={`flex justify-between py-3 px-5 items-center h-24 border-b-2 w-5/6 m-auto  border-black ${marginB}`}
@@ -15,14 +15,62 @@ const [isClose,setIsClose] = useState(true)
         </h1>
       </div>
       <div className="block sm:hidden">
-        <img className="h-8 w-8" src={burger} alt="burger-icon"   onClick={()=>setIsClose((prev)=>!prev)}/>
+        <img
+          className="h-8 w-8"
+          src={burger}
+          alt="burger-icon"
+          onClick={() => setIsClose((prev) => !prev)}
+        />
       </div>
-      <div className={`fixed flex top-0 ease-linear transition-all duration-500  ${isClose?"right-[-100%]":"right-0"} h-screen  w-1/2 gap-5 `}>
-        <div><img src={close} className="h-8 w-8"  alt="close-icon"  onClick={()=>setIsClose((prev)=>!prev)}/></div>
+      <div
+        className={`fixed flex top-0 ease-linear transition-all duration-500  ${
+          isClose ? "right-[-100%]" : "right-0"
+        } h-screen  w-1/2 gap-5 `}
+      >
+        <div>
+          <img
+            src={close}
+            className="h-8 w-8"
+            alt="close-icon"
+            onClick={() => setIsClose((prev) => !prev)}
+          />
+        </div>
         <div className="flex flex-col gap-5 py-10 pl-10 bg-white w-full h-screen">
-          <p className="font-sans font-semibold text-lg underline hover:text-blue-600 ">Profile</p>
-          <p className="font-sans font-semibold text-lg underline hover:text-blue-600">Create post</p>
-          <p className="font-sans font-semibold text-lg underline hover:text-blue-600">Logout</p>
+          {isUser ? (
+            <>
+              <p
+                onClick={() => navigate("/user/profile")}
+                className="font-sans font-semibold text-lg underline hover:text-blue-600 "
+              >
+                Profile
+              </p>
+              <p
+                onClick={() => navigate("/user/create_post")}
+                className="font-sans font-semibold text-lg underline hover:text-blue-600"
+              >
+                Create post
+              </p>
+              <p className="font-sans font-semibold text-lg underline hover:text-blue-600">
+                Logout
+              </p>
+            </>
+          ) : (
+            <>
+             
+              <p
+                onClick={() => navigate("/user/login")}
+                className="font-sans font-semibold text-lg underline hover:text-blue-600 "
+              >
+                Login
+              </p>
+              <p
+                onClick={() => navigate("/user/register")}
+                className="font-sans font-semibold text-lg underline hover:text-blue-600 "
+              >
+                Register
+              </p>
+            </>
+          )}
         </div>
       </div>
       {isUser ? (
