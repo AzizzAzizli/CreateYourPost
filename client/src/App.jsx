@@ -7,11 +7,12 @@ import Register from "./Pages/Register";
 import Profile from "./Pages/Profile";
 import CreatePost from "./Pages/CreatePost";
 import PostDetail from "./Pages/PostDetail";
+import Navigation from "./components/Nav";
 
 function App() {
   return (
     <>
-      <ToastContainer autoClose={750}/>
+      <ToastContainer autoClose={750} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/user/login" element={<Login />} />

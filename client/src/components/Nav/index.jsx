@@ -1,10 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import burger from "../../assets/icons/burger.svg";
 import close from "../../assets/icons/close.svg";
-const Navigation = ({ marginB = "mb-16", isUser = false }) => {
+import Cookies from "js-cookie";
+
+const Navigation = ({ marginB = "mb-16" }) => {
   const navigate = useNavigate();
   const [isClose, setIsClose] = useState(true);
+  const [isUser, setIsUser] = useState(false);
+  const [avatar, setAvatar] = useState("A");
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    // console.log(token);
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    const firstLetter = user.fullname[0].toUpperCase();
+    if (user) {
+      setAvatar(firstLetter);
+    }
+    if (token) {
+      setIsUser(true);
+      return;
+    } else {
+      setIsUser(false);
+      localStorage.removeItem("user");
+      return;
+    }
+  });
+
   return (
     <div
       className={`flex justify-between py-3 px-5 items-center h-24 border-b-2 w-5/6 m-auto  border-black ${marginB}`}
@@ -56,7 +80,6 @@ const Navigation = ({ marginB = "mb-16", isUser = false }) => {
             </>
           ) : (
             <>
-             
               <p
                 onClick={() => navigate("/user/login")}
                 className="font-sans font-semibold text-lg underline hover:text-blue-600 "
@@ -79,7 +102,7 @@ const Navigation = ({ marginB = "mb-16", isUser = false }) => {
             onClick={() => navigate("/user/profile")}
             className=" border border-black rounded-full flex justify-center items-center h-9 w-9 hover:bg-gray-200 cursor-pointer "
           >
-            <span>A</span>
+            <span>{avatar}</span>
           </div>
           <button
             onClick={() => navigate("/user/create_post")}

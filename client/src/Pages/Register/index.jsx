@@ -32,7 +32,7 @@ const Register = () => {
           return;
         } else {
           const resData = await registerUser(userData);
-          console.log(resData);
+          // console.log(resData);
           if (resData.status === 201) {
             toast.success(resData.message);
             setUserData({
@@ -45,6 +45,7 @@ const Register = () => {
             return;
           } else {
             toast.error(resData.message);
+            return;
           }
         }
       }

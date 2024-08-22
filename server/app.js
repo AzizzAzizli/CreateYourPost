@@ -86,7 +86,7 @@ app.post("/api/users/login", async (req, res) => {
             status: 200,
             token,
             data: {
-              id: user._id,
+              userId: user._id,
               email: user.email,
               fullname: user.fullname,
             },
