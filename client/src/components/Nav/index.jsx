@@ -32,8 +32,13 @@ const Navigation = ({ marginB = "mb-16" }) => {
   }, []);
   
   function toggleLogoutDiv() {
-  setIsLogOutOpen((prev)=>!prev)
-}
+    setIsLogOutOpen((prev) => !prev)
+    if (window.innerWidth < 640) {
+      setIsClose(true)
+      return
+    }
+  }
+  
 
   function logOut() {
     localStorage.removeItem("user");
@@ -41,11 +46,13 @@ const Navigation = ({ marginB = "mb-16" }) => {
     toast.success("User logged out!")
     window.location.reload()
     toggleLogoutDiv()
+ 
+    return
   }
 
   return (
     <>
-      <div className={`bg-white h-44 fixed flex flex-col w-1/3 p-3 border border-black  transition-all duration-500 top-[50%] ${islogOutOpen?" right-[50%] ":" right-[-100%] "}  transform translate-x-1/2 -translate-y-1/2`}>
+      <div className={`bg-white h-44 fixed flex flex-col w-2/3 sm:w-1/3 p-3 border border-black  transition-all duration-500 top-[50%] ${islogOutOpen?" right-[50%] ":" right-[-100%] "}  transform translate-x-1/2 -translate-y-1/2`}>
         <div onClick={toggleLogoutDiv} className="fixed top-0 right-0 "><img className="h-8 w-8" src={close} alt="close-icon" /></div>
         <div className="text-center font-semibold text-xl border-b border-black pb-3"><p>Are you sure?</p>
         </div>
