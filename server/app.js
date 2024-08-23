@@ -230,7 +230,7 @@ app.put("/api/post/delete/postId=:postId", async (req, res) => {
 });
 
 //Update the post
-app.put("/api/post/update/postId=:postId", async (req, res) => {
+app.put("/api/post/update/postId=:postId",authenticateToken, async (req, res) => {
   try {
     const postId = req.params.postId;
     const { title, description, content } = req.body;

@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navigation from "../../components/Nav";
 import { toast } from "react-toastify";
-import { createNewPost } from "../../services";
+import { createNewPost, editPost, getPostDetail } from "../../services";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const CreatePost = () => {
+const EditPost = () => {
+  const { id } = useParams();
+  const [postId, setPostId] = useState("");
   const [postData, setPostData] = useState({
     title: "",
     description: "",
     content: "",
-    userId: JSON?.parse(localStorage.getItem("user"))?.userId,
-    author: JSON?.parse(localStorage.getItem("user"))?.fullname,
   });
   const navigate = useNavigate();
 
-  async function createPost(e) {
+  async function editCurrentPost(e) {
     e.preventDefault();
     const { title, description, content } = postData;
     if (!title || !description || !content) {
@@ -23,29 +23,46 @@ const CreatePost = () => {
       return;
     } else {
       const token = Cookies.get("token");
-      const resData = await createNewPost(postData, token);
+      const resData = await editPost(postId, postData, token);
 
-      if (resData.status === 201) {
+      if (resData.status === 200) {
         toast.success(resData.message);
-        setPostData({
-          title: "",
-          description: "",
-          content: "",
-          userId: JSON?.parse(localStorage.getItem("user"))?.userId,
-        });
-        navigate("/user/profile");
+        navigate(`/user/posts/postId=${postId}`);
         return;
       } else {
         toast.error(resData.message);
       }
     }
   }
+
+  async function getDetail(postId) {
+    const resData = await getPostDetail(postId);
+    //   console.log(resData);
+
+    if (resData.status === 200) {
+      setPostData(resData?.data[0]);
+    } else {
+      toast.error(resData.message);
+    }
+  }
+
+  useEffect(() => {
+    const linkId = id.split("=")[1];
+    setPostId(linkId);
+  }, [id]);
+
+  useEffect(() => {
+    if (postId) {
+      getDetail(postId);
+    }
+  }, [postId]);
+
   return (
     <div className="h-screen">
       <Navigation />
       <div className="border border-black w-2/3 sm:w-1/2 m-auto p-5 ">
         <div>
-          <form onSubmit={createPost}>
+          <form onSubmit={editCurrentPost}>
             <div className="flex flex-col mb-3 ">
               <label htmlFor="title" className="font-semibold text-lg mb-2">
                 Title
@@ -113,4 +130,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default EditPost;

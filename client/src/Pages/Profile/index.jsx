@@ -19,7 +19,6 @@ const Profile = () => {
       return
     }
   }
-  console.log(posts);
   
   
   useEffect(() => {
@@ -28,9 +27,9 @@ const Profile = () => {
 
   return (
       <div className='h-screen'>
-          <Navigation marginB={"mb-8"} />
-          <div className='text-center mb-4  font-bold text-2xl '><p>Your Posts</p></div>
-          <Posts data={posts}/>
+          <Navigation  />
+          {/* <div className='text-center mb-4  font-bold text-2xl '><p>Your Posts</p></div> */}
+          <Posts isProfile data={posts}/>
     </div>
   )
 }

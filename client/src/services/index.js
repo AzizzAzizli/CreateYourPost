@@ -76,3 +76,26 @@ export async function  getUserPosts(userId) {
     const resData = await res.json();
     return resData
 }
+export async function  deletePost(postId) {
+    const res = await fetch(`http://localhost:3000/api/post/delete/postId=${postId}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+          },
+         
+    })
+    const resData = await res.json();
+    return resData
+}
+export async function  editPost(postId,data,token) {
+    const res = await fetch(`http://localhost:3000/api/post/update/postId=${postId}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(data),
+    })
+    const resData = await res.json();
+    return resData
+}

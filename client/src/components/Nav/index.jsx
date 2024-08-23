@@ -5,7 +5,7 @@ import close from "../../assets/icons/close.svg";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
-const Navigation = ({ marginB = "mb-16" }) => {
+const Navigation = () => {
   const navigate = useNavigate();
   const [isClose, setIsClose] = useState(true);
   const [isUser, setIsUser] = useState(false);
@@ -45,6 +45,7 @@ const Navigation = ({ marginB = "mb-16" }) => {
     Cookies.remove("token")
     toast.success("User logged out!")
     window.location.reload()
+    navigate("/")
     toggleLogoutDiv()
  
     return
@@ -60,7 +61,7 @@ const Navigation = ({ marginB = "mb-16" }) => {
       </div>
 
     <div
-      className={`flex justify-between py-3 px-5 items-center h-24 border-b-2 w-5/6 m-auto  border-black ${marginB}`}
+      className={`flex justify-between py-3 px-5 items-center h-24 border-b-2 w-5/6 m-auto  border-black mb-12`}
     >
       <div className="cursor-pointer" onClick={() => navigate("/")}>
         <h1 className="font-sans text-2xl sm:text-3xl font-bold tracking-tighter">

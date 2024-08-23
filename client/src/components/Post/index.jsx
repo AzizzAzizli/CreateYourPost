@@ -8,7 +8,6 @@ const navigate = useNavigate();
   
   async function postClick() {
     const resData = await updateViews(_id);
-    console.log(resData);
     if (resData.status === 200) {
       navigate(`/user/posts/postId=${_id}`);
       return;

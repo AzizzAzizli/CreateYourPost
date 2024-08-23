@@ -7,7 +7,7 @@ import Register from "./Pages/Register";
 import Profile from "./Pages/Profile";
 import CreatePost from "./Pages/CreatePost";
 import PostDetail from "./Pages/PostDetail";
-import Navigation from "./components/Nav";
+import EditPost from "./Pages/EditPost";
 
 function App() {
   return (
@@ -19,13 +19,9 @@ function App() {
         <Route path="/user/register" element={<Register />} />
         <Route path="/user/profile" element={<Profile />} />
         <Route path="/user/create_post" element={<CreatePost />} />
-        <Route path="/user/posts/:id" element={<PostDetail/> } />
-        
-        
-        
-        
-        
-     </Routes>
+        <Route path="/user/posts/:id" element={<PostDetail />} />
+        <Route path="/user/posts/edit/:id" element={<EditPost />} />
+      </Routes>
     </>
   );
 }
