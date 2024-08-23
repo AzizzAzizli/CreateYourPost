@@ -3,19 +3,21 @@ import { useNavigate } from "react-router-dom";
 import burger from "../../assets/icons/burger.svg";
 import close from "../../assets/icons/close.svg";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 const Navigation = ({ marginB = "mb-16" }) => {
   const navigate = useNavigate();
   const [isClose, setIsClose] = useState(true);
   const [isUser, setIsUser] = useState(false);
   const [avatar, setAvatar] = useState("A");
+  const [islogOutOpen, setIsLogOutOpen] = useState(false)
 
   useEffect(() => {
     const token = Cookies.get("token");
     // console.log(token);
 
-    const user = JSON.parse(localStorage.getItem("user"));
-    const firstLetter = user.fullname[0].toUpperCase();
+    const user = JSON.parse(localStorage?.getItem("user"));
+    const firstLetter = user?.fullname[0]?.toUpperCase();
     if (user) {
       setAvatar(firstLetter);
     }
@@ -27,9 +29,29 @@ const Navigation = ({ marginB = "mb-16" }) => {
       localStorage.removeItem("user");
       return;
     }
-  },[]);
+  }, []);
+  
+  function toggleLogoutDiv() {
+  setIsLogOutOpen((prev)=>!prev)
+}
+
+  function logOut() {
+    localStorage.removeItem("user");
+    Cookies.remove("token")
+    toast.success("User logged out!")
+    window.location.reload()
+    toggleLogoutDiv()
+  }
 
   return (
+    <>
+      <div className={`bg-white h-44 fixed flex flex-col w-1/3 p-3 border border-black  transition-all duration-500 top-[50%] ${islogOutOpen?" right-[50%] ":" right-[-100%] "}  transform translate-x-1/2 -translate-y-1/2`}>
+        <div onClick={toggleLogoutDiv} className="fixed top-0 right-0 "><img className="h-8 w-8" src={close} alt="close-icon" /></div>
+        <div className="text-center font-semibold text-xl border-b border-black pb-3"><p>Are you sure?</p>
+        </div>
+        <div className="flex h-full gap-5  justify-center items-center"><button onClick={logOut} className="border border-black py-1 w-1/3 hover:bg-green-400">Yes</button> <button onClick={toggleLogoutDiv} className="border border-black py-1 w-1/3 hover:bg-red-400">No</button></div>
+      </div>
+
     <div
       className={`flex justify-between py-3 px-5 items-center h-24 border-b-2 w-5/6 m-auto  border-black ${marginB}`}
     >
@@ -74,7 +96,7 @@ const Navigation = ({ marginB = "mb-16" }) => {
               >
                 Create post
               </p>
-              <p className="font-sans font-semibold text-lg underline hover:text-blue-600">
+              <p onClick={toggleLogoutDiv} className="font-sans font-semibold text-lg underline hover:text-blue-600">
                 Logout
               </p>
             </>
@@ -110,7 +132,7 @@ const Navigation = ({ marginB = "mb-16" }) => {
           >
             Create post
           </button>
-          <button className=" border border-black px-3 h-9 hover:bg-gray-200">
+          <button onClick={toggleLogoutDiv} className=" border border-black px-3 h-9 hover:bg-gray-200">
             Logout
           </button>
         </div>
@@ -130,7 +152,8 @@ const Navigation = ({ marginB = "mb-16" }) => {
           </button>
         </div>
       )}
-    </div>
+      </div>
+      </>
   );
 };
 

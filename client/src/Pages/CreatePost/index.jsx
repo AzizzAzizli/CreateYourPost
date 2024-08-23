@@ -10,6 +10,7 @@ const CreatePost = () => {
     description: "",
     content: "",
     userId: JSON?.parse(localStorage.getItem("user"))?.userId,
+    author:JSON?.parse(localStorage.getItem('user'))?.fullname
   });
 
   async function createPost(e) {

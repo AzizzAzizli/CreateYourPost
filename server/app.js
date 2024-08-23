@@ -102,13 +102,13 @@ app.post("/api/users/login", async (req, res) => {
 //Create a new post
 app.post("/api/posts/", authenticateToken, async (req, res) => {
   try {
-    const { title, description, content, userId } = req.body;
-    if (!title || !description || !content) {
+    const { title, description, content, userId,author } = req.body;
+    if (!title || !description || !content ) {
       return res
         .status(400)
         .json({ message: "Please fill the all required fields!", status: 400 });
     } else {
-      const post = new Posts({ title, description, content, userId });
+      const post = new Posts({ title, description, content, userId ,author });
       await post.save();
       return res
         .status(201)

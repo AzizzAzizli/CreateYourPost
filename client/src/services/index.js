@@ -37,7 +37,39 @@ export async function  getAllPosts() {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
-            
+          },
+         
+    })
+    const resData = await res.json();
+    return resData
+}
+export async function  getPostDetail(postId) {
+    const res = await fetch(`http://localhost:3000/api/posts/postId=${postId}`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+          },
+         
+    })
+    const resData = await res.json();
+    return resData
+}
+export async function  updateViews(postId) {
+    const res = await fetch(`http://localhost:3000/api/post/views/postId=${postId}`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+          },
+         
+    })
+    const resData = await res.json();
+    return resData
+}
+export async function  getUserPosts(userId) {
+    const res = await fetch(`http://localhost:3000/api/posts/userId=${userId}`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
           },
          
     })
