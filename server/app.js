@@ -19,6 +19,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.get('/', (req, res) => { 
+  res.send("hello")
+})
+
 //User Register
 app.post("/api/users/register/", async (req, res) => {
   try {
