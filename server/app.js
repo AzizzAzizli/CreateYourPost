@@ -3,7 +3,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
 const cors = require("cors");
-const Users = require("./models/users");
+const Users = require("./models/Users");
 const Posts = require("./models/Posts");
 
 require("./DB/connection");
