@@ -11,7 +11,7 @@ const {authenticateToken} = require("./middleware/authMiddlewate")
 const app = express();
 const PORT = process.env.PORT || 3000;
 const corsOptions = {
-  origin: ['http://localhost:5173','https://create-your-post.vercel.app','https://create-your-post-cgbe3535z-azizs-projects-ec53d121.vercel.app/','https://create-your-post-git-main-azizs-projects-ec53d121.vercel.app/'],
+  origin: ['http://localhost:5173','https://create-your-post.vercel.app','https://create-your-post-cgbe3535z-azizs-projects-ec53d121.vercel.app','https://create-your-post-git-main-azizs-projects-ec53d121.vercel.app'],
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT'],
 };
