@@ -8,6 +8,12 @@ import { useNavigate, useParams } from "react-router-dom";
 const EditPost = () => {
   const { id } = useParams();
   const [postId, setPostId] = useState("");
+  const [initialPost, setInitialPost] = useState({
+    title: "",
+    description: "",
+    content: "",
+  })
+  const [isDisabled, setIsDisabled] = useState(true);
   const [postData, setPostData] = useState({
     title: "",
     description: "",
@@ -41,10 +47,17 @@ const EditPost = () => {
 
     if (resData.status === 200) {
       setPostData(resData?.data[0]);
+      setInitialPost(resData?.data[0]);
     } else {
       toast.error(resData.message);
     }
   }
+
+
+  useEffect(() => {
+    const hasChanges = JSON.stringify(postData) !== JSON.stringify(initialPost);
+    setIsDisabled(!hasChanges);
+  }, [postData, initialPost]);
 
   useEffect(() => {
     const linkId = id.split("=")[1];
@@ -118,8 +131,9 @@ const EditPost = () => {
               />
             </div>
             <button
+              disabled={isDisabled}
               type="submit"
-              className="border mt-3 border-black w-full py-2 hover:bg-blue-500 hover:text-white font-semibold"
+              className={`border mt-3 border-black w-full py-2 ${isDisabled?"bg-gray-300 text-white":"hover:bg-blue-500  hover:text-white"}  font-semibold`}
             >
               Save
             </button>

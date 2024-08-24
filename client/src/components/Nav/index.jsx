@@ -11,7 +11,7 @@ const Navigation = () => {
   const [isUser, setIsUser] = useState(false);
   const [avatar, setAvatar] = useState("A");
   const [islogOutOpen, setIsLogOutOpen] = useState(false)
-
+const [userId, setUserId] = useState(JSON.parse(localStorage.getItem("user"))?.userId)
   useEffect(() => {
     const token = Cookies.get("token");
     // console.log(token);
@@ -44,8 +44,8 @@ const Navigation = () => {
     localStorage.removeItem("user");
     Cookies.remove("token")
     toast.success("User logged out!")
-    window.location.reload()
     navigate("/")
+    window.location.reload()
     toggleLogoutDiv()
  
     return
@@ -53,18 +53,18 @@ const Navigation = () => {
 
   return (
     <>
-      <div className={`bg-white h-44 fixed flex flex-col w-2/3 sm:w-1/3 p-3 border border-black  transition-all duration-500 top-[50%] ${islogOutOpen?" right-[50%] ":" right-[-100%] "}  transform translate-x-1/2 -translate-y-1/2`}>
-        <div onClick={toggleLogoutDiv} className="fixed top-0 right-0 "><img className="h-8 w-8" src={close} alt="close-icon" /></div>
+      <div className={`bg-white h-44 fixed flex z-10 flex-col w-2/3 sm:w-1/3 p-3 border border-black  transition-all duration-500 top-[50%] ${islogOutOpen?" right-[50%] ":" right-[-100%] "}  transform translate-x-1/2 -translate-y-1/2`}>
+        <div onClick={toggleLogoutDiv} className="fixed top-0 right-0 "><img className="h-8 w-8 cursor-pointer" src={close} alt="close-icon" /></div>
         <div className="text-center font-semibold text-xl border-b border-black pb-3"><p>Are you sure?</p>
         </div>
         <div className="flex h-full gap-5  justify-center items-center"><button onClick={logOut} className="border border-black py-1 w-1/3 hover:bg-green-400">Yes</button> <button onClick={toggleLogoutDiv} className="border border-black py-1 w-1/3 hover:bg-red-400">No</button></div>
       </div>
 
     <div
-      className={`flex justify-between py-3 px-5 items-center h-24 border-b-2 w-5/6 m-auto  border-black mb-12`}
+      className={`flex justify-between py-3 px-1 sm:px-5 items-center h-24 border-b-2 w-5/6 m-auto  border-black mb-12`}
     >
       <div className="cursor-pointer" onClick={() => navigate("/")}>
-        <h1 className="font-sans text-2xl sm:text-3xl font-bold tracking-tighter">
+        <h1 className="font-sans text-2xl sm:text-3xl font-bold sm:font-bold tracking-tighter">
           Create your posts
         </h1>
       </div>
@@ -93,7 +93,7 @@ const Navigation = () => {
           {isUser ? (
             <>
               <p
-                onClick={() => navigate("/user/profile")}
+                onClick={() => navigate(`/user/profile/userId=${userId}`)}
                 className="font-sans font-semibold text-lg underline hover:text-blue-600 "
               >
                 Profile
@@ -129,7 +129,7 @@ const Navigation = () => {
       {isUser ? (
         <div className=" gap-3 hidden sm:flex">
           <div
-            onClick={() => navigate("/user/profile")}
+             onClick={() => navigate(`/user/profile/userId=${userId}`)}
             className=" border border-black rounded-full flex justify-center items-center h-9 w-9 hover:bg-gray-200 cursor-pointer "
           >
             <span>{avatar}</span>

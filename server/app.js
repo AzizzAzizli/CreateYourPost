@@ -102,7 +102,7 @@ app.post("/api/users/login", async (req, res) => {
 //Create a new post
 app.post("/api/posts/", authenticateToken, async (req, res) => {
   try {
-    const { title, description, content, userId,author } = req.body;
+    const { title, description, content, userId, author } = req.body;
     if (!title || !description || !content ) {
       return res
         .status(400)
@@ -153,6 +153,8 @@ app.get("/api/posts/userId=:userId", async (req, res) => {
     }).sort({
       createdAt: -1,
     });
+    const userData = await Users.findById(userId)
+// console.log(userData);
 
     let responseData = userPosts.map((post) => ({
       _id: post._id,
@@ -164,7 +166,7 @@ app.get("/api/posts/userId=:userId", async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Your posts", status: 200, data: responseData });
+      .json({ message: "User posts", status: 200, data: responseData,user:userData.fullname });
   } catch (error) {
     return res.status(500).json({ message: error.message, status: 500 });
   }

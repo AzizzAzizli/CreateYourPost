@@ -8,6 +8,7 @@ import Profile from "./Pages/Profile";
 import CreatePost from "./Pages/CreatePost";
 import PostDetail from "./Pages/PostDetail";
 import EditPost from "./Pages/EditPost";
+import UserProfile from "./Pages/usersProfile";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/user/login" element={<Login />} />
         <Route path="/user/register" element={<Register />} />
         <Route path="/user/profile" element={<Profile />} />
+        <Route path="/user/profile/:id" element={<UserProfile />} />
+
         <Route path="/user/create_post" element={<CreatePost />} />
         <Route path="/user/posts/:id" element={<PostDetail />} />
         <Route path="/user/posts/edit/:id" element={<EditPost />} />

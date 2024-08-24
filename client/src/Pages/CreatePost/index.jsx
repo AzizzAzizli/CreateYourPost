@@ -33,7 +33,7 @@ const CreatePost = () => {
           content: "",
           userId: JSON?.parse(localStorage.getItem("user"))?.userId,
         });
-        navigate("/user/profile");
+        navigate(`/user/profile/userId=${postData?.userId}`);
         return;
       } else {
         toast.error(resData.message);

@@ -22,6 +22,10 @@ const postsSchema = new mongoose.Schema(
       default: 0,
       type: Number,
     },
+    author: {
+      type:String,
+      required:true
+    },
     isDeleted: {
       default: false,
       type: Boolean,

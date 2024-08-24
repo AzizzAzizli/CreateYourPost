@@ -15,4 +15,10 @@ export function formatDate(isoDate) {
 }
 
 
-
+export function truncateTitle(title,count) {
+  const maxLength = count;
+  if (title.length > maxLength) {
+    return title.slice(0, maxLength) + "...";
+  }
+  return title;
+}
