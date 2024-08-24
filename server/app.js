@@ -45,7 +45,7 @@ app.post("/api/users/register/", async (req, res) => {
           email: email,
           password: hashedPassword,
         });
-        User.save();
+       await User.save();
         return res
           .status(201)
           .json({ message: "User registered successfully!", status: 201 });
