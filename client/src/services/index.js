@@ -1,5 +1,5 @@
 export async function  registerUser(data) {
-    const res = await fetch('https://create-your-post-zsia.vercel.app/api/users/register/', {
+    const res = await fetch('https://createyourpost.onrender.com/api/users/register/', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -10,7 +10,7 @@ export async function  registerUser(data) {
     return resData
 }
 export async function  loginUser(data) {
-    const res = await fetch('https://create-your-post-zsia.vercel.app/api/users/login', {
+    const res = await fetch('https://createyourpost.onrender.com/api/users/login', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export async function  loginUser(data) {
     return resData
 }
 export async function  createNewPost(data,token) {
-    const res = await fetch('https://create-your-post-zsia.vercel.app/api/posts/', {
+    const res = await fetch('https://createyourpost.onrender.com/api/posts/', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -33,7 +33,7 @@ export async function  createNewPost(data,token) {
     return resData
 }
 export async function  getAllPosts() {
-    const res = await fetch('https://create-your-post-zsia.vercel.app/api/posts/', {
+    const res = await fetch('https://createyourpost.onrender.com/api/posts/', {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export async function  getAllPosts() {
     return resData
 }
 export async function  getPostDetail(postId) {
-    const res = await fetch(`https://create-your-post-zsia.vercel.app/api/posts/postId=${postId}`, {
+    const res = await fetch(`https://createyourpost.onrender.com/api/posts/postId=${postId}`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export async function  getPostDetail(postId) {
     return resData
 }
 export async function  updateViews(postId) {
-    const res = await fetch(`https://create-your-post-zsia.vercel.app/api/post/views/postId=${postId}`, {
+    const res = await fetch(`https://createyourpost.onrender.com/api/post/views/postId=${postId}`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -66,7 +66,7 @@ export async function  updateViews(postId) {
     return resData
 }
 export async function  getUserPosts(userId) {
-    const res = await fetch(`https://create-your-post-zsia.vercel.app/api/posts/userId=${userId}`, {
+    const res = await fetch(`https://createyourpost.onrender.com/api/posts/userId=${userId}`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -77,7 +77,7 @@ export async function  getUserPosts(userId) {
     return resData
 }
 export async function  deletePost(postId) {
-    const res = await fetch(`https://create-your-post-zsia.vercel.app/api/post/delete/postId=${postId}`, {
+    const res = await fetch(`https://createyourpost.onrender.com/api/post/delete/postId=${postId}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export async function  deletePost(postId) {
     return resData
 }
 export async function  editPost(postId,data,token) {
-    const res = await fetch(`https://create-your-post-zsia.vercel.app/api/post/update/postId=${postId}`, {
+    const res = await fetch(`https://createyourpost.onrender.com/api/post/update/postId=${postId}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json",
