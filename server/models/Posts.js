@@ -30,6 +30,14 @@ const postsSchema = new mongoose.Schema(
       default: false,
       type: Boolean,
     },
+    likes: {
+      type: Array,
+      default:[],
+    },
+    likenum: {
+      type: Number,
+      default:0,
+    }
   },
   {
     timestamps: true,

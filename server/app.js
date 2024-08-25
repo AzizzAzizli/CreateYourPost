@@ -7,21 +7,26 @@ const Users = require("./models/Users");
 const Posts = require("./models/Posts");
 
 require("./DB/connection");
-const {authenticateToken} = require("./middleware/authMiddlewate")
+const { authenticateToken } = require("./middleware/authMiddlewate");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const corsOptions = {
-  origin: ['http://localhost:5173','https://create-your-post.vercel.app','https://create-your-post-cgbe3535z-azizs-projects-ec53d121.vercel.app','https://create-your-post-git-main-azizs-projects-ec53d121.vercel.app'],
+  origin: [
+    "http://localhost:5173",
+    "https://create-your-post.vercel.app",
+    "https://create-your-post-cgbe3535z-azizs-projects-ec53d121.vercel.app",
+    "https://create-your-post-git-main-azizs-projects-ec53d121.vercel.app",
+  ],
   optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT'],
+  methods: ["GET", "POST", "PUT"],
 };
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => { 
-  res.send("hello")
-})
+app.get("/", (req, res) => {
+  res.send("hello");
+});
 
 //User Register
 app.post("/api/users/register/", async (req, res) => {
@@ -45,7 +50,7 @@ app.post("/api/users/register/", async (req, res) => {
           email: email,
           password: hashedPassword,
         });
-       await User.save();
+        await User.save();
         return res
           .status(201)
           .json({ message: "User registered successfully!", status: 201 });
@@ -107,12 +112,12 @@ app.post("/api/users/login", async (req, res) => {
 app.post("/api/posts/", authenticateToken, async (req, res) => {
   try {
     const { title, description, content, userId, author } = req.body;
-    if (!title || !description || !content ) {
+    if (!title || !description || !content) {
       return res
         .status(400)
         .json({ message: "Please fill the all required fields!", status: 400 });
     } else {
-      const post = new Posts({ title, description, content, userId ,author });
+      const post = new Posts({ title, description, content, userId, author });
       await post.save();
       return res
         .status(201)
@@ -136,6 +141,8 @@ app.get("/api/posts/", async (req, res) => {
       description: post.description,
       userId: post.userId,
       views: post.views,
+      likes: post.likes,
+      likenum: post.likenum,
     }));
 
     return res
@@ -157,8 +164,8 @@ app.get("/api/posts/userId=:userId", async (req, res) => {
     }).sort({
       createdAt: -1,
     });
-    const userData = await Users.findById(userId)
-// console.log(userData);
+    const userData = await Users.findById(userId);
+    // console.log(userData);
 
     let responseData = userPosts.map((post) => ({
       _id: post._id,
@@ -166,11 +173,16 @@ app.get("/api/posts/userId=:userId", async (req, res) => {
       description: post.description,
       userId: post.userId,
       views: post.views,
+      likes: post.likes,
+      likenum: post.likenum,
     }));
 
-    return res
-      .status(200)
-      .json({ message: "User posts", status: 200, data: responseData,user:userData.fullname });
+    return res.status(200).json({
+      message: "User posts",
+      status: 200,
+      data: responseData,
+      user: userData.fullname,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message, status: 500 });
   }
@@ -236,29 +248,65 @@ app.put("/api/post/delete/postId=:postId", async (req, res) => {
 });
 
 //Update the post
-app.put("/api/post/update/postId=:postId",authenticateToken, async (req, res) => {
+app.put(
+  "/api/post/update/postId=:postId",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const postId = req.params.postId;
+      const { title, description, content } = req.body;
+
+      const updatedPost = await Posts.findByIdAndUpdate(
+        postId,
+        {
+          title,
+          description,
+          content,
+        },
+        { new: true }
+      );
+
+      if (!updatedPost) {
+        return res.status(404).json({ message: "Post not found", status: 404 });
+      }
+
+      return res.status(200).json({
+        message: "Post updated successfully",
+        status: 200,
+        data: updatedPost,
+      });
+    } catch (error) {
+      return res.status(500).json({ message: error.message, status: 500 });
+    }
+  }
+);
+// Post likes
+app.post("/api/posts/like", authenticateToken, async (req, res) => {
   try {
-    const postId = req.params.postId;
-    const { title, description, content } = req.body;
+    const { postId, userId } = req.body;
 
-    const updatedPost = await Posts.findByIdAndUpdate(
-      postId,
-      {
-        title,
-        description,
-        content,
-      },
-      { new: true }
-    );
+    const post = await Posts.findById(postId);
 
-    if (!updatedPost) {
+    if (!post) {
       return res.status(404).json({ message: "Post not found", status: 404 });
     }
 
+    const index = post.likes.indexOf(userId);
+
+    if (index === -1) {
+      post.likes.push(userId);
+    } else {
+      post.likes.splice(index, 1);
+    }
+    post.likenum = post.likes.length;
+
+    await post.save();
+
     return res.status(200).json({
-      message: "Post updated successfully",
+      message: "Like updated",
+      likes: post.likes,
+      likenum: post?.likes?.length,
       status: 200,
-      data: updatedPost,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message, status: 500 });

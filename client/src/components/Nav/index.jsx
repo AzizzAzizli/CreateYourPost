@@ -13,7 +13,7 @@ const Navigation = () => {
   const [islogOutOpen, setIsLogOutOpen] = useState(false)
 const [userId, setUserId] = useState(JSON.parse(localStorage.getItem("user"))?.userId)
   useEffect(() => {
-    const token = Cookies.get("token");
+    const token = Cookies.get("token")||"";
     // console.log(token);
 
     const user = JSON.parse(localStorage?.getItem("user"));

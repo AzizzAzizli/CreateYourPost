@@ -28,7 +28,7 @@ const EditPost = () => {
       toast.warning("Please fill the all fields!");
       return;
     } else {
-      const token = Cookies.get("token");
+      const token = Cookies.get("token")||"";
       const resData = await editPost(postId, postData, token);
 
       if (resData.status === 200) {

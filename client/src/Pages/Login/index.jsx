@@ -26,7 +26,6 @@ const Login = () => {
         return;
       } else {
         const resData = await loginUser(userData);
-        console.log(resData);
         if (resData.status === 200) {
           toast.success(resData.message);
           setUserData({

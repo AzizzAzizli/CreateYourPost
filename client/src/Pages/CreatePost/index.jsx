@@ -22,7 +22,7 @@ const CreatePost = () => {
       toast.warning("Please fill the all fields!");
       return;
     } else {
-      const token = Cookies.get("token");
+      const token = Cookies.get("token")||"";
       const resData = await createNewPost(postData, token);
 
       if (resData.status === 201) {

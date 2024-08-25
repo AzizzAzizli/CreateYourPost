@@ -99,3 +99,18 @@ export async function  editPost(postId,data,token) {
     const resData = await res.json();
     return resData
 }
+
+export const handleLike = async (postId,userId,token) => {
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/posts/like`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ postId,userId }),
+    });
+  
+    const resData = await response.json();
+    return resData
+  };
+  
