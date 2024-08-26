@@ -53,6 +53,7 @@ const [userId, setUserId] = useState(JSON.parse(localStorage.getItem("user"))?.u
 
   return (
     <>
+        {/* Modal div */}
       <div className={`bg-white h-44 fixed flex z-10 flex-col w-2/3 sm:w-1/3 p-3 border border-black  transition-all duration-500 top-[50%] ${islogOutOpen?" right-[50%] ":" right-[-100%] "}  transform translate-x-1/2 -translate-y-1/2`}>
         <div onClick={toggleLogoutDiv} className="fixed top-0 right-0 "><img className="h-8 w-8 cursor-pointer" src={close} alt="close-icon" /></div>
         <div className="text-center font-semibold text-xl border-b border-black pb-3"><p>Are you sure?</p>
@@ -77,10 +78,11 @@ const [userId, setUserId] = useState(JSON.parse(localStorage.getItem("user"))?.u
         />
       </div>
       <div
-        className={`fixed flex top-0 ease-linear transition-all duration-500  ${
+        className={`fixed flex top-0 ease-linear transition-all z-10 duration-500  ${
           isClose ? "right-[-100%]" : "right-0"
         } h-screen  w-1/2 gap-5 `}
-      >
+        >
+          {/* Burger menu */}
         <div>
           <img
             src={close}
@@ -89,7 +91,7 @@ const [userId, setUserId] = useState(JSON.parse(localStorage.getItem("user"))?.u
             onClick={() => setIsClose((prev) => !prev)}
           />
         </div>
-        <div className="flex flex-col gap-5 py-10 pl-10 bg-white w-full h-screen">
+        <div  className="flex flex-col gap-5 py-10 pl-10 bg-white w-full h-screen">
           {isUser ? (
             <>
               <p

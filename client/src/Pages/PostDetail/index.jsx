@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Navigation from "../../components/Nav";
 import { useNavigate, useParams } from "react-router-dom";
-import { deletePost, getPostDetail } from "../../services";
+import { deletePost, getPostDetail, handleLike } from "../../services";
+import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import views from "../../assets/icons/viewIcon.svg";
 import close from "../../assets/icons/close.svg";
 import dots from "../../assets/icons/dots.svg";
-import rightarrow from "../../assets/icons/rightarrow.svg";
+import heartfilled from "../../assets/icons/heartfilled.svg";
+import heart from "../../assets/icons/heart.svg";
 import { formatDate } from "../../utils";
 const PostDetail = () => {
   const { id } = useParams();
@@ -16,7 +18,34 @@ const PostDetail = () => {
   const [authorId, setAuthorId] = useState(JSON.parse(localStorage.getItem("user"))?.userId)
   const [isAuthor, setIsAuthor] = useState(false)
   const navigate = useNavigate();
-const [isMenuOpen,setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [token, setToken] = useState(Cookies?.get("token")||"");
+  const [isLiked, setIsLiked] = useState(false);
+  const [likenumber, setLikenumber] = useState(0);
+  const [userId,setUserId] = useState(JSON.parse(localStorage.getItem("user"))?.userId)
+
+  async function updateLikes(postId, userId, token) {
+    const resData = await handleLike(postId, userId, token);
+    if (resData?.status === 200) {
+      setIsLiked((prev) => !prev);
+      if (isLiked) {
+        setLikenumber((prev) => prev - 1);
+      } else {
+        setLikenumber((prev) => prev + 1);
+      }
+    } else {
+      toast.error(resData?.message);
+    }
+  }
+
+  useEffect(() => {
+
+      setIsLiked(postDetail?.likes?.includes(userId));
+      setLikenumber(postDetail?.likenum);
+
+  }, [postDetail?.likes]);
+
+
   async function getDetail(postId) {
     const resData = await getPostDetail(postId);
     if (resData.status === 200) {
@@ -75,7 +104,7 @@ const [isMenuOpen,setIsMenuOpen] = useState(false)
         </div>
         <div className="flex h-full gap-5  justify-center items-center"><button onClick={()=>deleteCurrentPost(postId)}  className="border border-black py-1 w-1/3 hover:bg-green-400">Yes</button> <button onClick={toggleModalDiv} className="border border-black py-1 w-1/3 hover:bg-red-400">No</button></div>
       </div>
-      <div className="w-5/6 m-auto border-2 border-black h-3/4 p-7  overflow-y-auto relative">
+      <div className="w-5/6 m-auto border-2 border-black h-3/4 p-7  overflow-y-auto  relative">
         {/* Three dots */}
         <div className={`${isAuthor?"":"hidden"}`} ><img onClick={toggleMenu} className="h-8 w-8 absolute top-2 right-2 cursor-pointer" src={dots} alt="dots-icon" /></div>
        {/* Delete and Edit div */}
@@ -87,13 +116,23 @@ const [isMenuOpen,setIsMenuOpen] = useState(false)
         <div className="w-full ">
           <div>
             <div className="flex flex-col mb-2">
-              <p className=" text-xl font-medium">Author:</p>
+             <div className="flex items-center justify-between"><p className=" text-lg sm:text-xl font-medium">Author:</p>  <div className="flex items-center gap-2">
+          <span className="text-xl">{likenumber}</span>
+          <div>
+            <img
+              onClick={() => updateLikes(postDetail?._id, userId, token)}
+              className="h-7 w-7 cursor-pointer"
+              src={isLiked ? heartfilled : heart}
+              alt="like-icon"
+            />
+          </div>
+        </div></div> 
               <div className="flex items-center w-full justify-between">
                 <div className="flex items-center  gap-2">
-                  <p className="text-3xl font-semibold  break-all">
+                  <p className="text-xl sm:text-3xl  font-semibold  break-all">
                     {postDetail.author}
                   </p>
-                  <span onClick={()=>navigate(`/user/profile/userId=${postDetail?.userId}`)} className="font-bold text-lg cursor-pointer hover:text-blue-500">{ "--->"}</span>
+                  <span onClick={()=>navigate(`/user/profile/userId=${postDetail?.userId}`)} className="font-bold text-sm sm:text-lg cursor-pointer hover:text-blue-500">{ "-->"}</span>
                 </div>
                 <div className="flex gap-2">
                   <span>{postDetail.views}</span>{" "}
@@ -103,20 +142,20 @@ const [isMenuOpen,setIsMenuOpen] = useState(false)
               </div>
             </div>
             <div className="flex flex-col mb-2">
-              <p className=" text-xl font-medium">Title:</p>
-              <p className="text-3xl font-semibold  break-all">
+              <p className=" text-lg sm:text-xl font-medium">Title:</p>
+              <p className="text-xl sm:text-3xl font-semibold  break-all">
                 {postDetail.title}
               </p>
             </div>
             <div className="flex flex-col mb-2">
-              <p className=" text-xl font-medium">Description:</p>
-              <p className="text-3xl font-semibold  break-all">
+              <p className=" text-lg sm:text-xl font-medium">Description:</p>
+              <p className="text-xl sm:text-3xl  font-semibold  break-all">
                 {postDetail.description}
               </p>
             </div>
             <div className="flex flex-col mb-2">
-              <p className=" text-xl font-medium">Content:</p>
-              <p className="text-2xl font-sans font-medium break-all ">
+              <p className=" text-lg sm:text-xl font-medium">Content:</p>
+              <p className="text-xl sm:text-2xl font-sans font-medium break-all ">
                 {postDetail.content}
               </p>
             </div>
