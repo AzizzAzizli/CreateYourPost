@@ -83,7 +83,7 @@ const PostCard = ({
           {views}
           <img className="h-6" src={viewIcon} alt="" />
         </div>{" "}
-        <p onClick={postClick} className="hover:text-blue-700">
+        <p onClick={postClick} className="hover:text-blue-700 cursor-pointer">
           Read more
         </p>
       </div>
