@@ -22,7 +22,8 @@ const PostDetail = () => {
   const [token, setToken] = useState(Cookies?.get("token")||"");
   const [isLiked, setIsLiked] = useState(false);
   const [likenumber, setLikenumber] = useState(0);
-  const [userId,setUserId] = useState(JSON.parse(localStorage.getItem("user"))?.userId)
+  const [userId, setUserId] = useState(JSON.parse(localStorage.getItem("user"))?.userId)
+  const [loading,setLoading]=useState(true)
 
   async function updateLikes(postId, userId, token) {
     const resData = await handleLike(postId, userId, token);
@@ -50,8 +51,10 @@ const PostDetail = () => {
     const resData = await getPostDetail(postId);
     if (resData.status === 200) {
       setPostDetail(resData?.data[0]);
+      setLoading(false)
     } else {
       toast.error(resData.message);
+      setLoading(false)
     }
   }
   async function deleteCurrentPost(postId) {
@@ -105,6 +108,7 @@ const PostDetail = () => {
         <div className="flex h-full gap-5  justify-center items-center"><button onClick={()=>deleteCurrentPost(postId)}  className="border border-black py-1 w-1/3 hover:bg-green-400">Yes</button> <button onClick={toggleModalDiv} className="border border-black py-1 w-1/3 hover:bg-red-400">No</button></div>
       </div>
       <div className="w-5/6 m-auto border-2 border-black h-3/4 p-7  overflow-y-auto  relative">
+       {loading&&<div className="text-3xl font-bold text-center mt-9">Loading...</div>}
         {/* Three dots */}
         <div className={`${isAuthor?"":"hidden"}`} ><img onClick={toggleMenu} className="h-8 w-8 absolute top-2 right-2 cursor-pointer" src={dots} alt="dots-icon" /></div>
        {/* Delete and Edit div */}
@@ -113,7 +117,7 @@ const PostDetail = () => {
           }`}> <button onClick={toggleModalDiv} className="hover:text-red-400">Delete</button>
           <button onClick={()=>navigate(`/user/posts/edit/postId=${postId}`)} className="hover:text-green-400">Edit</button></div>
         {/* Body of detail */}
-        <div className="w-full ">
+        <div className={`w-full ${loading?"hidden":""}`}>
           <div>
             <div className="flex flex-col mb-2">
              <div className="flex items-center justify-between"><p className=" text-lg sm:text-xl font-medium">Author:</p>  <div className="flex items-center gap-2">
