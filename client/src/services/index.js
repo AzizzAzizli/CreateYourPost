@@ -114,3 +114,28 @@ export const handleLike = async (postId,userId,token) => {
     return resData
   };
   
+  export const addComment = async (postId,data,token) => {
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/post/comments/${postId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+  
+    const resData = await response.json();
+    return resData
+  };
+  
+  export const getComment = async (postId) => {
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/post/comments/${postId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  
+    const resData = await response.json();
+    return resData
+  };

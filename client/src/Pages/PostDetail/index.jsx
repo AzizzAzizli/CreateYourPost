@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navigation from "../../components/Nav";
 import { useNavigate, useParams } from "react-router-dom";
-import { deletePost, getPostDetail, handleLike } from "../../services";
+import { addComment, deletePost, getComment, getPostDetail, handleLike } from "../../services";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import views from "../../assets/icons/viewIcon.svg";
@@ -9,7 +9,12 @@ import close from "../../assets/icons/close.svg";
 import dots from "../../assets/icons/dots.svg";
 import heartfilled from "../../assets/icons/heartfilled.svg";
 import heart from "../../assets/icons/heart.svg";
+import comment from "../../assets/icons/comment.svg";
+import sent from "../../assets/icons/sent.svg";
 import { formatDate } from "../../utils";
+import Comment from "../../components/Comment";
+
+
 const PostDetail = () => {
   const { id } = useParams();
   const [postId, setPostId] = useState("");
@@ -24,6 +29,15 @@ const PostDetail = () => {
   const [likenumber, setLikenumber] = useState(0);
   const [userId, setUserId] = useState(JSON.parse(localStorage.getItem("user"))?.userId)
   const [loading,setLoading]=useState(true)
+  const [isOpenComment, setIsOpenComment] = useState(false);
+  const [commentData, setCommentData] = useState({
+    name: JSON.parse(localStorage.getItem("user"))?.fullname,
+    userId: JSON.parse(localStorage.getItem("user"))?.userId,
+    comment: "",
+    
+  })
+  const [comments, setComments] = useState([]);
+const [commentsnumber, setCommentsnumber] = useState(0)
 
   async function updateLikes(postId, userId, token) {
     const resData = await handleLike(postId, userId, token);
@@ -39,12 +53,48 @@ const PostDetail = () => {
     }
   }
 
-  useEffect(() => {
+  
+  async function newComment(postId, data, token) {
+    if (commentData?.comment.trim() === "") {
+      toast.warning("Please enter a comment!")
+      return
+    }
+    const resData = await addComment(postId, data, token);
+    if (resData.status === 201) {
+      toast.success(resData.message)
+      setCommentsnumber(prev=>prev+1)
+      setComments((prev)=>([...prev,resData?.data]))
+      
+      setCommentData({
+        name: JSON.parse(localStorage.getItem("user"))?.fullname,
+        userId: JSON.parse(localStorage.getItem("user"))?.userId,
+        comment: "",
+      })
+    } else {
+      toast.error(resData.message)
+      return
+    }
+    
+  }
+  async function getPostCopmments(postId) {
+    toggleCommentDiv()
 
+    const resData = await getComment(postId)
+    if (resData.status === 200) {
+      setComments(resData.data)
+      return
+    } else {
+      toast.error(resData.message)
+      return
+    }
+    
+  }
+  useEffect(() => {
+    setCommentsnumber(postDetail?.commentsnum)
       setIsLiked(postDetail?.likes?.includes(userId));
       setLikenumber(postDetail?.likenum);
 
-  }, [postDetail?.likes]);
+  }, [postDetail?.likes,postDetail?.commentsnum]);
 
 
   async function getDetail(postId) {
@@ -87,7 +137,9 @@ const PostDetail = () => {
     }
   }, [postId]);
 
-
+  function toggleCommentDiv() {
+  setIsOpenComment(prev=>!prev)
+}
   const toggleMenu = () => {
     setIsMenuOpen((prev)=>!prev);
   };
@@ -107,10 +159,33 @@ const PostDetail = () => {
         </div>
         <div className="flex h-full gap-5  justify-center items-center"><button onClick={()=>deleteCurrentPost(postId)}  className="border border-black py-1 w-1/3 hover:bg-green-400">Yes</button> <button onClick={toggleModalDiv} className="border border-black py-1 w-1/3 hover:bg-red-400">No</button></div>
       </div>
+      {/* Comments div */}
+      <div className={`bg-gray-400/50  w-full h-full transition-all duration-500  fixed ${isOpenComment?"bottom-0":"-bottom-[100%]"}  z-40  `}>
+        <div className={`bg-gray-100 rounded-tl-xl rounded-tr-xl w-3/4  ssm:h-2/3 sm:w-1/2 xl:w-1/3 h-[500px] fixed z-50  transition-all duration-700  ${isOpenComment ? "bottom-0" : "-bottom-[100%]"} right-1/2   transform translate-x-1/2 `}>
+          <div className="flex justify-end p-2"> <img className="h-8 w-8  cursor-pointer" onClick={toggleCommentDiv} src={close} alt="close-icon" />
+          </div>
+          <div className="px-5 pt-3 h-[77%] overflow-y-auto">
+
+          {
+  comments.length > 0 
+    ? comments.map((comment, i) => <Comment key={comment.name + i} {...comment} />)
+    : <div className="text-center text-2xl font-bold">No comment</div>
+}
+
+           
+
+            
+          </div >
+
+          <div className="pt-1 flex gap-3 fixed bottom-1  items-center w-full px-5"><input value={commentData?.comment} onChange={(e)=>setCommentData((prev)=>({...prev,comment:e.target?.value}))} className="border-black border w-full py-2 h-[30px] bg-gray-100 px-2 " type="text" /><div><img  onClick={()=>newComment(postId,commentData,token)} className="cursor-pointer" src={sent} alt="sent-icon" /></div></div>
+        </div>
+      </div>
+
+      {/*Body */}
       <div className="w-5/6 m-auto border-2 border-black h-3/4 p-7  overflow-y-auto  relative">
        {loading&&<div className="text-3xl font-bold text-center mt-9">Loading...</div>}
         {/* Three dots */}
-        <div className={`${isAuthor?"":"hidden"}`} ><img onClick={toggleMenu} className="h-8 w-8 absolute top-2 right-2 cursor-pointer" src={dots} alt="dots-icon" /></div>
+        <div className={`${isAuthor?"":"hidden"}`} ><img onClick={toggleMenu} className="h-8 w-8 absolute top-0 right-1 cursor-pointer" src={dots} alt="dots-icon" /></div>
        {/* Delete and Edit div */}
         <div className={`absolute flex flex-col py-5 px-7 border border-gray-300 shadow-md gap-3 right-5 top-10 bg-white transition-all duration-300 transform ${
           isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
@@ -120,8 +195,9 @@ const PostDetail = () => {
         <div className={`w-full ${loading?"hidden":""}`}>
           <div>
             <div className="flex flex-col mb-2">
-             <div className="flex items-center justify-between"><p className=" text-lg sm:text-xl font-medium">Author:</p>  <div className="flex items-center gap-2">
-          <span className="text-xl">{likenumber}</span>
+              <div className="flex items-center justify-between"><p className=" text-lg sm:text-xl font-medium">Author:</p>  <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1"><span className="text-xl">{commentsnumber}</span> <div><img onClick={()=>getPostCopmments(postId)} className="h-7 w-7 cursor-pointer" src={comment} alt="comment-icon" /></div></div>
+          <div className="flex items-center gap-1"><span className="text-xl">{likenumber}</span>
           <div>
             <img
               onClick={() => updateLikes(postDetail?._id, userId, token)}
@@ -129,7 +205,8 @@ const PostDetail = () => {
               src={isLiked ? heartfilled : heart}
               alt="like-icon"
             />
-          </div>
+                  </div>
+                  </div>
         </div></div> 
               <div className="flex items-center w-full justify-between">
                 <div className="flex items-center  gap-2">

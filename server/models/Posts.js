@@ -37,6 +37,14 @@ const postsSchema = new mongoose.Schema(
     likenum: {
       type: Number,
       default:0,
+    },
+    comments: {
+      type: Array,
+      default:[],
+    },
+    commentsnum: {
+      type: Number,
+      default:0,
     }
   },
   {

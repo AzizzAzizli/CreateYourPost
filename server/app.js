@@ -8,6 +8,7 @@ const Posts = require("./models/Posts");
 
 require("./DB/connection");
 const { authenticateToken } = require("./middleware/authMiddlewate");
+const getCurrentFormattedDate = require("./utils");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const corsOptions = {
@@ -312,6 +313,46 @@ app.post("/api/posts/like", authenticateToken, async (req, res) => {
     return res.status(500).json({ message: error.message, status: 500 });
   }
 });
+
+//Add comment to the post
+app.post("/api/post/comments/:postId", authenticateToken, async (req, res) => {
+  try {
+    const postId = req.params.postId
+    const data = req.body
+
+    const post = await Posts.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found", status: 404 });
+    }
+    data.date = getCurrentFormattedDate()
+
+    post.comments.push(data)
+    post.commentsnum =post.comments.length
+    await post.save()
+    return res.status(201).json({ message: "Comment saved successfully!", status:201,data: data });
+    
+  } catch (error) {
+    return res.status(500).json({ message: error.message, status: 500 });
+    
+  }
+})
+// Get post comments
+app.get("/api/post/comments/:postId", async (req, res) => { 
+  try {
+    const postId = req.params.postId;
+
+    const post = await Posts.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found", status: 404 });
+    }
+
+    return res.status(200).json({ message:"Post comments found", status:200,data:post.comments})
+  } catch (error) {
+    return res.status(500).json({ message: error.message, status: 500 });
+  }
+})
 
 app.listen(PORT, () => {
   console.log("Server is running", PORT);
