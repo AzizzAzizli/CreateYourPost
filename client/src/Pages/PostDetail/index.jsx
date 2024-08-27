@@ -80,7 +80,7 @@ const [commentsnumber, setCommentsnumber] = useState(0)
     }
     
   }
-  async function getPostCopmments(postId) {
+  async function getPostComments(postId) {
     toggleCommentDiv()
 
     const resData = await getComment(postId)
@@ -195,7 +195,7 @@ const [commentsnumber, setCommentsnumber] = useState(0)
           <div>
             <div className="flex flex-col mb-2">
               <div className="flex items-center justify-between"><p className=" text-lg sm:text-xl font-medium">Author:</p>  <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1"><span className="text-xl">{commentsnumber}</span> <div><img onClick={()=>getPostCopmments(postId)} className="h-7 w-7 cursor-pointer" src={comment} alt="comment-icon" /></div></div>
+                <div className="flex items-center gap-1"><span className="text-xl">{commentsnumber}</span> <div><img onClick={()=>getPostComments(postId)} className="h-7 w-7 cursor-pointer" src={comment} alt="comment-icon" /></div></div>
           <div className="flex items-center gap-1"><span className="text-xl">{likenumber}</span>
           <div>
             <img

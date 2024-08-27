@@ -86,7 +86,7 @@ const topRef = useRef(null)
     
   }
 
-  async function getPostCopmments(postId) {
+  async function getPostComments(postId) {
     toggleCommentDiv()
 
     const resData = await getComment(postId)
@@ -117,7 +117,7 @@ const topRef = useRef(null)
           <span>{commentsnumber }</span>{" "}
           <div>
             <img
-              onClick={()=>getPostCopmments(_id)}
+              onClick={()=>getPostComments(_id)}
               className="h-5 w-5 cursor-pointer"
               src={comment}
               alt="comment-icon"
