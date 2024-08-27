@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navigation from "../../components/Nav";
 import { useNavigate, useParams } from "react-router-dom";
 import { addComment, deletePost, getComment, getPostDetail, handleLike } from "../../services";
@@ -13,6 +13,7 @@ import comment from "../../assets/icons/comment.svg";
 import sent from "../../assets/icons/sent.svg";
 import { formatDate } from "../../utils";
 import Comment from "../../components/Comment";
+import CommentsModal from "../../components/CommentsModal";
 
 
 const PostDetail = () => {
@@ -39,6 +40,8 @@ const PostDetail = () => {
   const [comments, setComments] = useState([]);
 const [commentsnumber, setCommentsnumber] = useState(0)
 
+  const topRef = useRef(null)
+  
   async function updateLikes(postId, userId, token) {
     const resData = await handleLike(postId, userId, token);
     if (resData?.status === 200) {
@@ -63,7 +66,8 @@ const [commentsnumber, setCommentsnumber] = useState(0)
     if (resData.status === 201) {
       toast.success(resData.message)
       setCommentsnumber(prev=>prev+1)
-      setComments((prev)=>([...prev,resData?.data]))
+      setComments((prev) => ([resData?.data, ...prev]))
+      topRef.current.scrollIntoView({ behavior: "smooth" });
       
       setCommentData({
         name: JSON.parse(localStorage.getItem("user"))?.fullname,
@@ -160,26 +164,21 @@ const [commentsnumber, setCommentsnumber] = useState(0)
         <div className="flex h-full gap-5  justify-center items-center"><button onClick={()=>deleteCurrentPost(postId)}  className="border border-black py-1 w-1/3 hover:bg-green-400">Yes</button> <button onClick={toggleModalDiv} className="border border-black py-1 w-1/3 hover:bg-red-400">No</button></div>
       </div>
       {/* Comments div */}
-      <div className={`bg-gray-400/50  w-full h-full transition-all duration-500  fixed ${isOpenComment?"bottom-0":"-bottom-[100%]"}  z-40  `}>
+      {/* <div className={`bg-gray-400/50  w-full h-full transition-all duration-500  fixed ${isOpenComment?"bottom-0":"-bottom-[100%]"}  z-40  `}>
         <div className={`bg-gray-100 rounded-tl-xl rounded-tr-xl w-3/4  ssm:h-2/3 sm:w-1/2 xl:w-1/3 h-[500px] fixed z-50  transition-all duration-700  ${isOpenComment ? "bottom-0" : "-bottom-[100%]"} right-1/2   transform translate-x-1/2 `}>
           <div className="flex justify-end p-2"> <img className="h-8 w-8  cursor-pointer" onClick={toggleCommentDiv} src={close} alt="close-icon" />
           </div>
           <div className="px-5 pt-3 h-[77%] overflow-y-auto">
-
           {
   comments.length > 0 
     ? comments.map((comment, i) => <Comment key={comment.name + i} {...comment} />)
     : <div className="text-center text-2xl font-bold">No comment</div>
 }
-
-           
-
-            
           </div >
-
           <div className="pt-1 flex gap-3 fixed bottom-1  items-center w-full px-5"><input value={commentData?.comment} onChange={(e)=>setCommentData((prev)=>({...prev,comment:e.target?.value}))} className="border-black border w-full py-2 h-[30px] bg-gray-100 px-2 " type="text" /><div><img  onClick={()=>newComment(postId,commentData,token)} className="cursor-pointer" src={sent} alt="sent-icon" /></div></div>
         </div>
-      </div>
+      </div> */}
+      <CommentsModal isOpenComment={isOpenComment} topRef={topRef} toggleCommentDiv={toggleCommentDiv} commentData={commentData} setCommentData={setCommentData} comments={comments} newComment={newComment} postId={ postId} token={token} />
 
       {/*Body */}
       <div className="w-5/6 m-auto border-2 border-black h-3/4 p-7  overflow-y-auto  relative">

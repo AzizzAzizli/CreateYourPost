@@ -59,7 +59,7 @@ const Login = () => {
               <input
                 value={userData.email}
                 onChange={(e) =>
-                  setUserData((prev) => ({ ...prev, email: e.target.value }))
+                  setUserData((prev) => ({ ...prev, email: e?.target?.value?.trim() }))
                 }
                 autoComplete="email"
                 name="email"
@@ -77,7 +77,7 @@ const Login = () => {
               <input
                 value={userData.password}
                 onChange={(e) =>
-                  setUserData((prev) => ({ ...prev, password: e.target.value }))
+                  setUserData((prev) => ({ ...prev, password: e?.target?.value?.trim() }))
                 }
                 name="password"
                 placeholder="Enter your password"

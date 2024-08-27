@@ -144,6 +144,7 @@ app.get("/api/posts/", async (req, res) => {
       views: post.views,
       likes: post.likes,
       likenum: post.likenum,
+      commentsnum: post.commentsnum
     }));
 
     return res
@@ -176,6 +177,8 @@ app.get("/api/posts/userId=:userId", async (req, res) => {
       views: post.views,
       likes: post.likes,
       likenum: post.likenum,
+      commentsnum: post.commentsnum
+
     }));
 
     return res.status(200).json({
@@ -348,7 +351,7 @@ app.get("/api/post/comments/:postId", async (req, res) => {
       return res.status(404).json({ message: "Post not found", status: 404 });
     }
 
-    return res.status(200).json({ message:"Post comments found", status:200,data:post.comments})
+    return res.status(200).json({ message:"Post comments found", status:200,data:post.comments.reverse()})
   } catch (error) {
     return res.status(500).json({ message: error.message, status: 500 });
   }

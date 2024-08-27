@@ -68,7 +68,7 @@ const Register = () => {
               <input
                 value={userData.fullname}
                 onChange={(e) =>
-                  setUserData((prev) => ({ ...prev, fullname: e.target.value }))
+                  setUserData((prev) => ({ ...prev, fullname: e?.target?.value?.trim() }))
                 }
                 name="fullname"
                 autoComplete="name"
@@ -86,7 +86,7 @@ const Register = () => {
               <input
                 value={userData.email}
                 onChange={(e) =>
-                  setUserData((prev) => ({ ...prev, email: e.target.value }))
+                  setUserData((prev) => ({ ...prev, email: e?.target?.value?.trim() }))
                 }
                 name="email"
                 autoComplete="email"
@@ -104,7 +104,7 @@ const Register = () => {
               <input
                 value={userData.password}
                 onChange={(e) =>
-                  setUserData((prev) => ({ ...prev, password: e.target.value }))
+                  setUserData((prev) => ({ ...prev, password: e?.target?.value?.trim() }))
                 }
                 name="password"
                 placeholder="Enter your password"
