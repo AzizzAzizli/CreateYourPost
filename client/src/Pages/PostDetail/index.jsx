@@ -116,7 +116,7 @@ const [commentsnumber, setCommentsnumber] = useState(0)
     if (resData.status === 200) { 
       toast.success("Post deleted successfully!")
       toggleModalDiv()
-      navigate("/user/profile")
+      navigate(`/user/profile/userId=${userId}`)
     } else {
       toast.error(resData.message);
     }
