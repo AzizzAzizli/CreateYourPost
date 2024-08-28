@@ -357,6 +357,27 @@ app.get("/api/post/comments/:postId", async (req, res) => {
   }
 })
 
+// Search users list
+
+app.get("/api/users", async (req, res) => {
+  try {
+    const { fullname } = req.query; 
+
+    const users = await Users.find({
+      fullname: { $regex: fullname, $options: "i" } 
+    });
+    const resultUsers = users.map(user => ({
+      fullname: user.fullname,
+      userId:user._id
+    }))
+
+    return res.status(200).json({message:"Result users", data:resultUsers,status:200 });
+  } catch (error) {
+    return res.status(500).json({ message: error.message, status: 500 });
+  }
+});
+
+
 app.listen(PORT, () => {
   console.log("Server is running", PORT);
 });

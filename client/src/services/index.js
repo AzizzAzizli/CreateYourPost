@@ -138,4 +138,16 @@ export const handleLike = async (postId,userId,token) => {
   
     const resData = await response.json();
     return resData
-  };
+};
+export const searchUsers = async (fullname) => {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/users?fullname=${encodeURIComponent(fullname)}`, {
+    
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const resData = await response.json();
+  return resData
+};
