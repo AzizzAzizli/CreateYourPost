@@ -101,8 +101,21 @@ setSearchOpen(prev=> !prev)
       <div className={`fixed top-[90px] left-[50%] border-black border  transition-all duration-500  -translate-x-1/2 bg-white ${usersDivOpen?"h-[300px]":"h-0 opacity-0"} w-2/3 ssm:w-1/2 sm:w-1/3`}>
         <div className="flex justify-end p-1"><div><img className="h-7 w-7" onClick={toggleUsersDiv} src={close} alt="close-icon" /></div></div>
         <div className="p-3 h-[250px] overflow-y-auto">
-          {searchedUsers?.map(user => (<div key={user.userId} onClick={()=>onClickUser(user.userId)} className="border-black border-b pb-2 cursor-pointer mb-2"><p>Name: <span>{ user.fullname}</span></p></div>)) }
-        </div>
+  {searchedUsers.length > 0 ? (
+    searchedUsers.map(user => (
+      <div 
+        key={user.userId} 
+        onClick={() => onClickUser(user.userId)} 
+        className="border-black border-b pb-2 cursor-pointer mb-2"
+      >
+        <p>Name: <span>{user.fullname}</span></p>
+      </div>
+    ))
+  ) : (
+    <p className="text-center text-2xl font-bold">Not found</p>
+  )}
+</div>
+
       </div> 
       {/* ------------------------------------------- */}
     <div
