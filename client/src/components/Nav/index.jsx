@@ -170,9 +170,9 @@ const Navigation = () => {
             <input
               value={searchData}
               onChange={(e) => setSearchData(e?.target?.value?.trim())}
-              className={`border-black ${
-                searchOpen ? "w-32" : "w-0 opacity-0"
-              } border absolute right-9 transition-width duration-500 ease-in-out  px-2 py-1`}
+              className={`border-black  ${
+                searchOpen ? "sm:w-52 w-28 ssm:w-36" : "w-0 opacity-0"
+              } border  absolute right-9 transition-width duration-500 ease-in-out  px-2 py-1`}
               type="text"
             />
             <div>
@@ -254,7 +254,7 @@ const Navigation = () => {
                 value={searchData}
                 onChange={(e) => setSearchData(e?.target?.value?.trim())}
                 className={`border-black ${
-                  searchOpen ? "w-32" : "w-0 opacity-0"
+                  searchOpen ? " w-28 mmd:w-48" : "w-0 opacity-0"
                 } border absolute right-9 transition-width duration-500 ease-in-out  px-2 py-1`}
                 type="text"
               />
