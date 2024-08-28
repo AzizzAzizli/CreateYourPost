@@ -130,7 +130,7 @@ const Navigation = () => {
         <div className="flex justify-end p-1">
           <div>
             <img
-              className="h-7 w-7"
+              className="h-7 w-7 cursor-pointer"
               onClick={toggleUsersDiv}
               src={close}
               alt="close-icon"
