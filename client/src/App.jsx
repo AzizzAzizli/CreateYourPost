@@ -9,6 +9,7 @@ import CreatePost from "./Pages/CreatePost";
 import PostDetail from "./Pages/PostDetail";
 import EditPost from "./Pages/EditPost";
 import UserProfile from "./Pages/UsersProfile";
+import Page404 from "./Pages/404";
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
         <Route path="/user/create_post" element={<CreatePost />} />
         <Route path="/user/posts/:id" element={<PostDetail />} />
         <Route path="/user/posts/edit/:id" element={<EditPost />} />
+        <Route path="/*" element={<Page404/>} />
+
       </Routes>
     </>
   );
