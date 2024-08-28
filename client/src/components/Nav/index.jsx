@@ -137,7 +137,7 @@ const Navigation = () => {
             />
           </div>
         </div>
-        <div className="p-3 h-[250px] overflow-y-auto">
+        <div className={`p-3  transition-all duration-700  overflow-y-auto ${usersDivOpen?"h-[250px]":"h-0"}`}>
           {searchedUsers.length > 0 ? (
             searchedUsers.map((user) => (
               <div
