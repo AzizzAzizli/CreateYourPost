@@ -123,7 +123,7 @@ const Navigation = () => {
       </div>
       {/* Search div */}
       <div
-        className={`fixed top-[90px] left-[50%] border-black border  transition-all duration-500  -translate-x-1/2 bg-white ${
+        className={`fixed top-[90px] left-[50%] border-black border z-10 transition-all duration-500  -translate-x-1/2 bg-white ${
           usersDivOpen ? "h-[300px]" : "h-0 opacity-0"
         } w-2/3 ssm:w-1/2 sm:w-1/3`}
       >
@@ -131,7 +131,7 @@ const Navigation = () => {
           <div>
             <img
               className="h-7 w-7 cursor-pointer"
-              onClick={toggleUsersDiv}
+              onClick={()=>setUsersDivOpen(false)}
               src={close}
               alt="close-icon"
             />
